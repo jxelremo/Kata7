@@ -2,28 +2,29 @@ package kata7;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import kata7.Application.swing.HistogramDisplay;
-import kata7.Application.swing.HistogramPanel;
-import kata7.Application.swing.Toolbar;
+import kata7.view.HistogramDisplay;
+import kata7.application.swing.HistogramPanel;
+import kata7.application.swing.Toolbar;
 import kata7.control.CalculateCommand;
 import kata7.control.Command;
 import kata7.view.AttributeDialog;
 import kata7.view.PopulationDialog;
 
-public class Kata7 extends JFrame{
-    private Map <String, Command> commands;
+public class Application extends JFrame{
+    private Map <String, Command> commands = new HashMap<>();
     private PopulationDialog populationDialog;
     private AttributeDialog attributeDialog;
     private HistogramDisplay histogramDisplay;
         
     public static void main(String[] args) {
-        new Kata7().setVisible(true);
+        new Application().setVisible(true);
     }
     
-    public Kata7(){
+    public Application(){
         this.deployUI();
         this.createCommands();
     }
@@ -33,15 +34,15 @@ public class Kata7 extends JFrame{
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(500, 500));
         this.setLocationRelativeTo(this);
-        this.getContentPane().add(HistogramPanel());
+        this.getContentPane().add(histogramPanel());
         this.getContentPane().add(toolbar(commands), BorderLayout.NORTH);
     }
 
     private void createCommands() {
-        commands.put("Calculate", new CalculateCommand(attributeDialog, populationDialog, null));
+        commands.put("calculate", new CalculateCommand(attributeDialog, populationDialog, histogramDisplay));
     }
 
-    private HistogramPanel HistogramPanel() {
+    private HistogramPanel histogramPanel() {
         HistogramPanel panel = new HistogramPanel();
         this.histogramDisplay = panel;
         return panel;
